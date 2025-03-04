@@ -1,0 +1,1265 @@
+/* Styles du sélecteur de thèmes */
+.theme-selector {
+    margin-bottom: 25px;
+}
+
+.theme-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.theme-option {
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+    position: relative;
+}
+
+.theme-option:hover {
+    transform: translateY(-2px);
+}
+
+.theme-option.active {
+    box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.theme-option.active::after {
+    content: '\f00c';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: var(--primary-color);
+    color: white;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-preview {
+    height: 60px;
+    display: flex;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(232, 234, 237, 0.3);
+}
+
+.preview-sidebar {
+    width: 30%;
+    height: 100%;
+}
+
+.preview-content {
+    width: 70%;
+    height: 100%;
+}
+
+.theme-option span {
+    display: block;
+    text-align: center;
+    font-size: 12px;
+    padding: 6px 0;
+    color: #a9a9a9;
+}
+
+/* Thème clair */
+.theme-option[data-theme="light"] .preview-sidebar {
+    background-color: #323131;
+}
+.theme-option[data-theme="light"] .preview-content {
+    background-color: #f5f5f5;
+}
+
+/* Thème sombre */
+.theme-option[data-theme="dark"] .preview-sidebar {
+    background-color: #1a1a1a;
+}
+.theme-option[data-theme="dark"] .preview-content {
+    background-color: #2d2d2d;
+}
+
+/* Thème bleu */
+.theme-option[data-theme="blue"] .preview-sidebar {
+    background-color: #1a3a5f;
+}
+.theme-option[data-theme="blue"] .preview-content {
+    background-color: #e6f7ff;
+}
+
+/* Thème violet */
+.theme-option[data-theme="purple"] .preview-sidebar {
+    background-color: #432874;
+}
+.theme-option[data-theme="purple"] .preview-content {
+    background-color: #f8f0ff;
+}
+
+/* Variables des thèmes */
+:root {
+    /* Thème par défaut (clair) */
+    --primary-color: #4a6cfa;
+    --sidebar-bg: #323131;
+    --main-bg: #f5f5f5;
+    --task-bg: #ffffff;
+    --text-color: #333333;
+    --text-secondary: #666666;
+    --border-color: #e8eaed;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --transition: all 0.3s ease;
+}
+
+/* Appliquer le thème sombre */
+body.theme-dark {
+    --primary-color: #5d8eff;
+    --sidebar-bg: #1a1a1a;
+    --main-bg: #2d2d2d;
+    --task-bg: #3a3a3a;
+    --text-color: #f0eaea;
+    --text-secondary: #cdc2c2;
+    --border-color: #444444;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Appliquer le thème bleu */
+body.theme-blue {
+    --primary-color: #0070e0;
+    --sidebar-bg: #619ab5;
+    --main-bg: #619ab5;
+    --task-bg: #ffffff;
+    --text-color: #333333;
+    --text-secondary: #555555;
+    --border-color: #d0e7ff;
+    --shadow: 0 4px 12px rgba(0, 112, 224, 0.1);
+}
+
+/* Appliquer le thème violet */
+body.theme-purple {
+    --primary-color: #7e3ff2;
+    --sidebar-bg: #432874;
+    --main-bg: #f8f0ff;
+    --task-bg: #ffffff;
+    --text-color: #100d0d;
+    --text-secondary: #666666;
+    --border-color: #e9d8ff;
+    --shadow: 0 4px 12px rgba(126, 63, 242, 0.08);
+}
+
+/* Modifications du CSS existant pour prendre en compte les variables de thème */
+body {
+    background-color: var(--main-bg);
+}
+
+.main-content {
+    background-color: var(--main-bg);
+}
+
+.category-header {
+    background-color: var(--main-bg);
+    color: var(--text-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.date-today {
+    color: var(--text-color);
+}
+
+.category-header h2 {
+    color: var(--text-color);
+}
+
+.task-item {
+    background-color: var(--task-bg);
+    color: var(--text-color);
+    box-shadow: var(--shadow);
+}
+
+.task-title {
+    color: var(--text-secondary);
+}
+
+.task-details {
+    color: var(--text-secondary);
+}
+
+.add-task-container {
+    background-color: var(--main-bg);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.add-task-input {
+    background-color: var(--task-bg);
+}
+
+.add-task-input input {
+    background-color: transparent;
+    color: var(--text-color);
+}
+
+.add-task-input input::placeholder {
+    color: var(--text-secondary);
+}
+
+.task-action-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Animation de transition entre les thèmes */
+body, .sidebar, .main-content, .task-item, .add-task-container, .add-task-input, input, select {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Styles pour le modal de personnalisation de thème */
+.theme-modal-content {
+    max-width: 600px;
+}
+
+.theme-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px;
+}
+
+.theme-tab {
+    background: none;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    position: relative;
+    color: var(--text-secondary);
+}
+
+.theme-tab.active {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.theme-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary-color);
+}
+
+.preset-themes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.preset-theme {
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+    position: relative;
+    border: 2px solid transparent;
+}
+
+.preset-theme:hover {
+    transform: translateY(-2px);
+}
+
+.preset-theme.active {
+    border-color: var(--primary-color);
+}
+
+.preset-preview {
+    height: 80px;
+    display: flex;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.preset-preview .preview-sidebar {
+    width: 30%;
+    height: 100%;
+}
+
+.preset-preview .preview-content {
+    width: 70%;
+    height: 100%;
+}
+
+.preset-theme span {
+    display: block;
+    text-align: center;
+    font-size: 13px;
+    padding: 8px 0;
+    color: var(--text-color);
+}
+
+/* Thèmes préréglés */
+.preset-theme[data-theme="light"] .preview-sidebar { background-color: #323131; }
+.preset-theme[data-theme="light"] .preview-content { background-color: #f5f5f5; }
+
+.preset-theme[data-theme="dark"] .preview-sidebar { background-color: #1a1a1a; }
+.preset-theme[data-theme="dark"] .preview-content { background-color: #2d2d2d; }
+
+.preset-theme[data-theme="blue"] .preview-sidebar { background-color: #1a3a5f; }
+.preset-theme[data-theme="blue"] .preview-content { background-color: #e6f7ff; }
+
+.preset-theme[data-theme="purple"] .preview-sidebar { background-color: #432874; }
+.preset-theme[data-theme="purple"] .preview-content { background-color: #f8f0ff; }
+
+.preset-theme[data-theme="green"] .preview-sidebar { background-color: #1f3d29; }
+.preset-theme[data-theme="green"] .preview-content { background-color: #f0fff4; }
+
+.preset-theme[data-theme="pink"] .preview-sidebar { background-color: #5c2a4d; }
+.preset-theme[data-theme="pink"] .preview-content { background-color: #fff0f7; }
+
+/* Styles pour les sélecteurs de couleur personnalisés */
+.color-pickers {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.color-picker-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.color-picker-group label {
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: var(--text-color);
+}
+
+.color-picker-group input[type="color"] {
+    height: 40px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--task-bg);
+    cursor: pointer;
+}
+
+/* Palette de couleurs suggérées */
+.preset-palette {
+    margin-top: 25px;
+}
+
+.preset-palette h4 {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.palette-chips {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.palette-chip {
+    display: flex;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s ease;
+}
+
+.palette-chip:hover {
+    transform: scale(1.05);
+}
+
+.palette-chip span {
+    width: 25px;
+    height: 25px;
+}
+
+/* Actions du modal */
+.theme-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Variables pour les nouveaux thèmes */
+body.theme-green {
+    --primary-color: #32a852;
+    --sidebar-bg: #1f3d29;
+    --main-bg: #f0fff4;
+    --task-bg: #ffffff;
+    --text-color: #1e1c1c;
+    --text-secondary: #151313;
+    --border-color: #d4f0da;
+    --shadow: 0 4px 12px rgba(50, 168, 82, 0.08);
+}
+
+body.theme-pink {
+    --primary-color: #e83e8c;
+    --sidebar-bg: #5c2a4d;
+    --main-bg: #fff0f7;
+    --task-bg: #ffffff;
+    --text-color: #333333;
+    --text-secondary: #070606;
+    --border-color: #ffd6eb;
+    --shadow: 0 4px 12px rgba(232, 62, 140, 0.08);
+}
+
+/* Classes pour le thème personnalisé */
+body.theme-custom {
+    /* Ces valeurs seront écrasées par JavaScript */
+}
+/* Styles pour le sélecteur de thèmes style Microsoft To Do */
+.ms-theme-selector {
+    background-color: var(--task-bg);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+.ms-theme-title {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.ms-theme-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.ms-theme-option {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding: 10px 5px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.ms-theme-option:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.ms-theme-color-block {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-bottom: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.ms-theme-option:hover .ms-theme-color-block {
+    transform: scale(1.05);
+}
+
+.ms-theme-name {
+    font-size: 12px;
+    color: var(--text-color);
+}
+
+.ms-theme-check {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    width: 18px;
+    height: 18px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0078d7;
+    font-size: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.2s ease;
+}
+
+.ms-theme-option.active .ms-theme-check {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.ms-theme-customize {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#customize-theme-btn {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 8px 15px;
+    width: 100%;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+#customize-theme-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+#customize-theme-btn i {
+    margin-right: 8px;
+}
+
+/* Nouvelles variables de thème pour correspondre au style Microsoft */
+body.theme-light {
+    --primary-color: #0078d7;
+    --sidebar-bg: #f5f5f5;
+    --main-bg: #ffffff;
+    --task-bg: #ffffff;
+    --text-color: #060505;
+    --text-secondary: #0a0909;
+    --border-color: #e8eaed;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+
+
+
+
+body.theme-green {
+    --primary-color: #107c41;
+    --sidebar-bg: #488d5a;
+    --main-bg: #488d5a;
+    --task-bg: #ffffff;
+    --text-color: #333333;
+    --text-secondary: #666666;
+    --border-color: #d4f0da;
+    --shadow: 0 2px 8px rgba(16, 124, 65, 0.1);
+}
+
+body.theme-red {
+    --primary-color: #e74856;
+    --sidebar-bg: #e33636;
+    --main-bg: #e33636;
+    --task-bg: #ffffff;
+    --text-color: #333333;
+    --text-secondary: #666666;
+    --border-color: #ffd6d9;
+    --shadow: 0 2px 8px rgba(231, 72, 86, 0.1);
+}
+
+body.theme-orange {
+    --primary-color: #f7630c;
+    --sidebar-bg: #9b6331;
+    --main-bg: #9b6331;
+    --task-bg: #ffffff;
+    --text-color: #333333;
+    --text-secondary: #666666;
+    --border-color: #ffddc7;
+    --shadow: 0 2px 8px rgba(247, 99, 12, 0.1);
+}
+
+body.theme-pink {
+    --primary-color: #e83e8c;
+    --sidebar-bg: #e31b78;
+    --main-bg: #e31b78;
+    --task-bg: #ffffff;
+    --text-color: #333333;
+    --text-secondary: #666666;
+    --border-color: #ffd6eb;
+    --shadow: 0 2px 8px rgba(232, 62, 140, 0.1);
+}
+
+body.theme-teal {
+    --primary-color: #00b7c3;
+    --sidebar-bg: #26dcdc;
+    --main-bg: #26dcdc;
+    --task-bg: #0c0a0a;
+    --text-color: #333333;
+    --text-secondary: #666666;
+    --border-color: #d0f7f9;
+    --shadow: 0 2px 8px rgba(0, 183, 195, 0.1);
+}
+
+/* Adaptation pour le mode sombre pour tous les thèmes */
+body.theme-dark.theme-blue, 
+body.theme-dark.theme-purple,
+body.theme-dark.theme-green,
+body.theme-dark.theme-red,
+body.theme-dark.theme-orange,
+body.theme-dark.theme-pink,
+body.theme-dark.theme-teal {
+    --sidebar-bg: #252525;
+    --main-bg: #1f1f1f;
+    --task-bg: #2d2d2d;
+    --text-color: #e6e6e6;
+    --text-secondary: #b0b0b0;
+    --border-color: #444444;
+}
+
+/* Adaptation pour les petits écrans */
+@media (max-width: 768px) {
+    .ms-theme-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .ms-theme-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Styles pour le nouveau bouton de thème à trois points */
+.theme-toggle {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+}
+
+.theme-toggle-btn {
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: var(--text-color, #333);
+    background-color: var(--sidebar-bg, #f5f5f5);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.theme-dropdown {
+    position: absolute;
+    right: 0;
+    top: 45px;
+    background-color: var(--task-bg, #fff);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    width: 300px;
+    display: none;
+    z-index: 1000;
+}
+
+.theme-dropdown.show {
+    display: block;
+    animation: fadeIn 0.2s ease;
+}
+
+.theme-dropdown-title {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    color: var(--text-color, #333);
+}
+
+.theme-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.ms-theme-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.ms-theme-option:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.ms-theme-color-block {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-bottom: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.ms-theme-name {
+    font-size: 12px;
+    color: var(--text-color, #333);
+}
+
+.theme-customize-btn {
+    padding-top: 10px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.theme-customize-btn button {
+    width: 100%;
+    padding: 8px;
+    background: none;
+    border: none;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    color: var(--text-color, #333);
+}
+
+.theme-customize-btn button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.theme-customize-btn button i {
+    margin-right: 5px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Style pour la notification de changement de thème */
+.theme-notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background-color: var(--task-bg, #fff);
+    color: var(--text-color, #333);
+    padding: 10px 20px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    transition: transform 0.3s ease;
+}
+
+.theme-notification.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+:root {
+    /* Couleurs par défaut (thème clair) */
+    --primary-color: #4a6cfa;
+    --sidebar-bg: #f8f8f8;
+    --main-bg: #ffffff;
+    --text-color: #333333;
+    --task-item-bg: #ffffff;
+    --task-item-border: #e0e0e0;
+    --checkbox-border: #aaaaaa;
+    --category-hover: rgba(0, 0, 0, 0.05);
+    --category-active: rgba(74, 108, 250, 0.1);
+    --dropdown-bg: #ffffff;
+    --dropdown-shadow: rgba(0, 0, 0, 0.1);
+    --input-bg: #ffffff;
+    --input-border: #e0e0e0;
+}
+
+.app-logo h1{
+    color: var(--text-color);
+}
+
+/* Thème clair (par défaut) */
+.theme-light {
+    --primary-color: #4a6cfa;
+    --sidebar-bg: #f8f8f8;
+    --main-bg: #ffffff;
+    --text-color: #333333;
+    --task-item-bg: #ffffff;
+    --task-item-border: #e0e0e0;
+    --checkbox-border: #aaaaaa;
+    --category-hover: rgba(46, 109, 147, 0.05);
+    --category-active: rgba(74, 108, 250, 0.1);
+    --dropdown-bg: #ffffff;
+    --dropdown-shadow: rgba(0, 0, 0, 0.1);
+    --input-bg: #ffffff;
+    --input-border: #e0e0e0;
+}
+
+.sidebar{
+    color: var(--text-color);
+}
+
+/* Thème sombre */
+.theme-dark {
+    --primary-color: #5d8eff;
+    --sidebar-bg: #1a1a1a;
+    --main-bg: #2d2d2d;
+    --text-color: #f5f5f5;
+    --task-item-bg: #333333;
+    --task-item-border: #444444;
+    --checkbox-border: #666666;
+    --category-hover: rgba(255, 255, 255, 0.05);
+    --category-active: rgba(93, 142, 255, 0.2);
+    --dropdown-bg: #333333;
+    --dropdown-shadow: rgba(0, 0, 0, 0.3);
+    --input-bg: #3a3a3a;
+    --input-border: #555555;
+}
+
+/* Thème bleu */
+.theme-blue {
+    --primary-color: #0078d7;
+    --sidebar-bg: #f0f7ff;
+    --main-bg: #ffffff;
+    --text-color: #333333;
+    --task-item-bg: #ffffff;
+    --task-item-border: #d0e5f7;
+    --checkbox-border: #8abde6;
+    --category-hover: rgba(0, 120, 215, 0.05);
+    --category-active: rgba(0, 120, 215, 0.1);
+    --dropdown-bg: #ffffff;
+    --dropdown-shadow: rgba(0, 0, 0, 0.1);
+    --input-bg: #ffffff;
+    --input-border: #c3d8e8;
+}
+
+/* Thème violet */
+.theme-purple {
+    --primary-color: #8763b8;
+    --sidebar-bg: #f5f0ff;
+    --main-bg: #ffffff;
+    --text-color: #333333;
+    --task-item-bg: #ffffff;
+    --task-item-border: #e0d6f0;
+    --checkbox-border: #b59ece;
+    --category-hover: rgba(135, 99, 184, 0.05);
+    --category-active: rgba(135, 99, 184, 0.1);
+    --dropdown-bg: #ffffff;
+    --dropdown-shadow: rgba(0, 0, 0, 0.1);
+    --input-bg: #ffffff;
+    --input-border: #d8cfea;
+}
+
+/* Thème vert */
+.theme-green {
+    --primary-color: #107c41;
+    --sidebar-bg: #effaf4;
+    --main-bg: #ffffff;
+    --text-color: #333333;
+    --task-item-bg: #ffffff;
+    --task-item-border: #d0ead9;
+    --checkbox-border: #7cc69f;
+    --category-hover: rgba(16, 124, 65, 0.05);
+    --category-active: rgba(16, 124, 65, 0.1);
+    --dropdown-bg: #ffffff;
+    --dropdown-shadow: rgba(0, 0, 0, 0.1);
+    --input-bg: #ffffff;
+    --input-border: #cae6d5;
+}
+
+/* Thème rouge */
+.theme-red {
+    --primary-color: #e74856;
+    --sidebar-bg: #fff0f1;
+    --main-bg: #ffffff;
+    --text-color: #333333;
+    --task-item-bg: #ffffff;
+    --task-item-border: #fad0d3;
+    --checkbox-border: #f1a0a7;
+    --category-hover: rgba(231, 72, 86, 0.05);
+    --category-active: rgba(231, 72, 86, 0.1);
+    --dropdown-bg: #ffffff;
+    --dropdown-shadow: rgba(0, 0, 0, 0.1);
+    --input-bg: #ffffff;
+    --input-border: #ffd5d9;
+}
+
+/* Thème orange */
+.theme-orange {
+    --primary-color: #f7630c;
+    --sidebar-bg: #fff8f0;
+    --main-bg: #ffffff;
+    --text-color: #333333;
+    --task-item-bg: #ffffff;
+    --task-item-border: #fbe4d0;
+    --checkbox-border: #fbc199;
+    --category-hover: rgba(247, 99, 12, 0.05);
+    --category-active: rgba(247, 99, 12, 0.1);
+    --dropdown-bg: #ffffff;
+    --dropdown-shadow: rgba(0, 0, 0, 0.1);
+    --input-bg: #ffffff;
+    --input-border: #fae0c9;
+}
+
+/* Thème rose */
+.theme-pink {
+    --primary-color: #e83e8c;
+    --sidebar-bg: #fff0f6;
+    --main-bg: #ffffff;
+    --text-color: #f6e8e8;
+    --task-item-bg: #ffffff;
+    --task-item-border: #fad0e4;
+    --checkbox-border: #f1a0ca;
+    --category-hover: rgba(3, 2, 3, 0.05);
+    --category-active: rgba(2, 2, 2, 0.1);
+    --dropdown-bg: #ffffff;
+    --dropdown-shadow: rgba(0, 0, 0, 0.1);
+    --input-bg: #ffffff;
+    --input-border: #ffd5ea;
+}
+
+/* Thème turquoise */
+.theme-teal {
+    --primary-color: #00b7c3;
+    --sidebar-bg: #e6fafa;
+    --main-bg: #ffffff;
+    --text-color: #333333;
+    --task-item-bg: #ffffff;
+    --task-item-border: #c5eff1;
+    --checkbox-border: #8de8ef;
+    --category-hover: rgba(0, 183, 195, 0.05);
+    --category-active: rgba(0, 183, 195, 0.1);
+    --dropdown-bg: #ffffff;
+    --dropdown-shadow: rgba(0, 0, 0, 0.1);
+    --input-bg: #ffffff;
+    --input-border: #c0eef1;
+}
+
+/* Application des variables CSS pour les éléments de l'interface */
+
+body {
+    background-color: var(--main-bg);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.sidebar {
+    background-color: var(--sidebar-bg);
+    transition: all 0.3s ease;
+}
+
+.category-item {
+    transition: all 0.3s ease;
+}
+
+.category-item:hover {
+    background-color: var(--category-hover);
+}
+
+.category-item.active {
+    background-color: var(--category-active);
+    color: var(--primary-color);
+}
+
+.task-item {
+    background-color: var(--task-item-bg);
+    border: 1px solid var(--task-item-border);
+    transition: all 0.3s ease;
+}
+
+.checkbox-custom {
+    border: 1px solid var(--checkbox-border);
+    transition: all 0.3s ease;
+}
+
+input[type="text"], 
+input[type="email"], 
+input[type="password"],
+select, 
+textarea {
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.floating-options,
+.modal-content {
+    background-color: var(--dropdown-bg);
+    box-shadow: 0 4px 15px var(--dropdown-shadow);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+/* Styles pour le sélecteur de thèmes */
+.theme-toggle {
+    position: relative;
+    display: inline-block;
+}
+
+.theme-toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 8px;
+}
+
+.theme-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 40px;
+    background: var(--dropdown-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px var(--dropdown-shadow);
+    width: 300px;
+    z-index: 100;
+    padding: 16px;
+}
+
+.theme-dropdown.show {
+    display: block;
+}
+
+.theme-dropdown-title {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 18px;
+}
+
+.theme-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.ms-theme-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.ms-theme-option:hover {
+    background-color: var(--category-hover);
+}
+
+.ms-theme-color-block {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-bottom: 6px;
+    border: 1px solid var(--task-item-border);
+}
+
+.ms-theme-name {
+    font-size: 12px;
+}
+
+.theme-customize-btn {
+    border-top: 1px solid var(--task-item-border);
+    padding-top: 12px;
+}
+
+#customize-theme-btn {
+    background: transparent;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    width: 100%;
+    font-size: 14px;
+}
+
+#customize-theme-btn:hover {
+    background-color: var(--category-hover);
+}
+
+/* Styles pour la fenêtre modale de personnalisation */
+.theme-modal-content {
+    max-width: 500px;
+}
+
+.theme-tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--task-item-border);
+}
+
+.theme-tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 16px;
+}
+
+.theme-tab.active {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.preset-themes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.preset-theme {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.preset-theme:hover {
+    background-color: var(--category-hover);
+}
+
+.preset-theme.active {
+    background-color: var(--category-active);
+}
+
+.preset-preview {
+    width: 100px;
+    height: 60px;
+    margin: 0 auto 10px;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    border: 1px solid var(--task-item-border);
+}
+
+.preview-sidebar {
+    width: 30%;
+    height: 100%;
+}
+
+.preview-content {
+    width: 70%;
+    height: 100%;
+}
+
+/* Prévisualisation des thèmes prédéfinis */
+.preset-theme[data-theme="light"] .preview-sidebar { background-color: #f8f8f8; }
+.preset-theme[data-theme="light"] .preview-content { background-color: #ffffff; }
+
+.preset-theme[data-theme="dark"] .preview-sidebar { background-color: #1a1a1a; }
+.preset-theme[data-theme="dark"] .preview-content { background-color: #2d2d2d; }
+
+.preset-theme[data-theme="blue"] .preview-sidebar { background-color: #f0f7ff; }
+.preset-theme[data-theme="blue"] .preview-content { background-color: #ffffff; }
+.preset-theme[data-theme="blue"]::after { content: ""; display: block; height: 4px; background-color: #0078d7; margin-top: 5px; }
+
+.preset-theme[data-theme="purple"] .preview-sidebar { background-color: #f5f0ff; }
+.preset-theme[data-theme="purple"] .preview-content { background-color: #ffffff; }
+.preset-theme[data-theme="purple"]::after { content: ""; display: block; height: 4px; background-color: #8763b8; margin-top: 5px; }
+
+.preset-theme[data-theme="green"] .preview-sidebar { background-color: #effaf4; }
+.preset-theme[data-theme="green"] .preview-content { background-color: #ffffff; }
+.preset-theme[data-theme="green"]::after { content: ""; display: block; height: 4px; background-color: #107c41; margin-top: 5px; }
+
+.preset-theme[data-theme="pink"] .preview-sidebar { background-color: #fff0f6; }
+.preset-theme[data-theme="pink"] .preview-content { background-color: #ffffff; }
+.preset-theme[data-theme="pink"]::after { content: ""; display: block; height: 4px; background-color: #e83e8c; margin-top: 5px; }
+
+.color-pickers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.color-picker-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.color-picker-group label {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.color-picker-group input[type="color"] {
+    width: 100%;
+    height: 40px;
+    border: 1px solid var(--task-item-border);
+    background-color: var(--input-bg);
+}
+
+.preset-palette {
+    margin-top: 20px;
+}
+
+.preset-palette h4 {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.palette-chips {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.palette-chip {
+    cursor: pointer;
+    display: flex;
+    gap: 2px;
+    border: 1px solid var(--task-item-border);
+    border-radius: 4px;
+    padding: 3px;
+}
+
+.palette-chip span {
+    width: 20px;
+    height: 20px;
+    border-radius: 2px;
+}
+
+.theme-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}

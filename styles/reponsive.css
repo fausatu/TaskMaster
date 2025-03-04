@@ -1,0 +1,77 @@
+/* Correction des styles du bouton menu */
+.menu-toggle {
+    display: none; /* Caché par défaut sur desktop */
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 200;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-toggle i {
+    font-size: 18px;
+}
+
+.menu-toggle:hover {
+    background-color: #395be0;
+}
+
+.menu-toggle.active {
+    background-color: #e74856;
+}
+
+/* S'assurer que le bouton est bien positionné et dimensionné en mode mobile */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex;
+        width: 40px; /* Taille fixe */
+        height: 40px; /* Taille fixe */
+        left: 15px; /* Position fixe */
+    }
+    
+    /* Nous nous assurons que la sidebar a une largeur fixe et qu'elle est initialement cachée */
+    .sidebar {
+        position: fixed; /* La sidebar est fixée */
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 280px; /* Largeur fixe */
+        transform: translateX(-100%); /* Cache la sidebar hors écran */
+        transition: transform 0.3s ease;
+        z-index: 100;
+    }
+    
+    /* Quand la sidebar est ouverte, elle doit être visible */
+    .sidebar.sidebar-open {
+        transform: translateX(0);
+        box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+    
+    /* Assurons-nous que l'overlay est bien affiché quand il est actif */
+    .sidebar-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+    
+    /* Ajustons le contenu principal pour qu'il ne soit pas sous le bouton */
+    .main-content {
+        margin-left: 0;
+        padding-top: 70px; /* Un peu plus d'espace pour le bouton */
+    }
+}
+
+/* Animation pour le bouton hamburger quand il est actif */
+.menu-toggle.active {
+    background-color: #e74856;
+}
