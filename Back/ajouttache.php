@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 
         $_SESSION["succes"] = '<div id="succes" class="succes alert alert-success">Tâche ajoutée avec succès!</div>';
     } catch(PDOException $e) {
-        $_SESSION["succes"] = '<div id="succes" class="succes alert alert-danger">Erreur lors de l\'ajout de la tâche: ' . $e->getMessage() . '</div>';
+        $_SESSION["erreur"] = '<div id="succes" class="succes alert alert-danger">Erreur lors de l\'ajout de la tâche: ' . $e->getMessage() . '</div>';
     }
         
     // Répondre avec JSON pour les requêtes AJAX

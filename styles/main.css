@@ -29,6 +29,8 @@ body {
     height: 100vh;
     position: fixed;
     overflow-y: auto;
+    scrollbar-width: none;
+    
     padding: 20px;
     box-shadow: var(--shadow);
     transition: var(--transition);
@@ -114,7 +116,7 @@ body {
 .search-bar input {
     width: 100%;
     padding: 10px 15px 10px 40px;
-    border-radius: 20px;
+    border-radius: 60px;
     border: 1px solid rgba(232, 234, 237, 0.2);
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
@@ -272,6 +274,7 @@ body {
     border-radius: 5px;
     margin-bottom: 20px;
     font-weight: 500;
+    text-align: center;
 }
 
 .task-item {
@@ -407,6 +410,7 @@ input:checked ~ .task-content .task-title {
     border-radius: var(--task-radius);
     box-shadow: var(--shadow);
     padding: 12px 20px;
+   
 }
 
 .add-task-input i {
@@ -421,7 +425,12 @@ input:checked ~ .task-content .task-title {
     outline: none;
     font-size: 14px;
     padding: 5px 0;
+    border-radius: 15px;
 }
+#task-input{
+    border-radius: 5px;
+}
+
 
 .add {
     background-color: var(--primary-color);
@@ -588,79 +597,6 @@ input:checked ~ .task-content .task-title {
     background-color: white;
 }
 
-/* Modal Styles */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-}
-
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    animation: modalOpen 0.3s ease;
-}
-
-@keyframes modalOpen {
-    from {opacity: 0; transform: translateY(-20px);}
-    to {opacity: 1; transform: translateY(0);}
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close:hover {
-    color: black;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-}
-
-.form-group input, .form-group select {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-}
-
-.btn-primary {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-}
-
-.btn-primary:hover {
-    background-color: #395be0;
-}
 
 /* Empty Task List Styling */
 .task-item-empty {

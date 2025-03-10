@@ -2,12 +2,16 @@
   include("../Back/bd.php");
   include("../Back/donnee.php");
 
-//   echo "<pre>";
-// $debug_stmt = $cnx->prepare("SELECT * FROM taches WHERE utilisateur_id = ?");
-// $debug_stmt->execute([$_SESSION['id']]);
-// $all_tasks = $debug_stmt->fetchAll(PDO::FETCH_ASSOC);
-// print_r($all_tasks);
-// echo "</pre>";
+ $icon= "'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'";
+
+    if(isset($_SESSION["profil"])){
+        $phto = $_SESSION["profil"];
+    }
+    else{
+        $phto = $icon;
+    }
+
+
 
 
 ?>
@@ -32,9 +36,11 @@
     
     <link rel="stylesheet" href="../styles/main.css">
     <link rel="stylesheet" href="../styles/theme.css">
+    <link rel="stylesheet" href="../styles//reponsive.css">
     
 </head>
 <body>
+      
 
 <button class="menu-toggle" id="menuToggle">
     <i class="fas fa-bars"></i>
@@ -45,13 +51,13 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="app-logo">
-            <img src="../images/apple-splash-1334-750.jpg" alt="TaskMaster">
+            <img src="../images/apple-splash-1334-750.jpg" alt="Logo TaskMaster">
             <h1>TaskMaster</h1>
         </div>
 
         <div class="user-profile">
             <div class="profile-pic">
-                <img src="../images/chicken-8677626_1280.jpg" alt="Photo de profil">
+                <img src="<?php echo $phto   ?>" alt="Photo de profil">
             </div>
             <div class="user-info">
                 <h3><?php echo $_SESSION["nom"]." ".$_SESSION["prenom"]; ?></h3>
@@ -102,14 +108,22 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <?php if (isset($_SESSION["succes"])): ?>
+    <?php if (isset($_SESSION["erreur"])): ?>
             
-                <?php 
-                    echo $_SESSION["succes"];
-                    unset($_SESSION["succes"]); 
-                ?>
-          
-        <?php endif; ?>
+            <?php 
+                echo $_SESSION["erreur"];
+                unset($_SESSION["erreur"]); 
+            ?>
+      
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION["success"])): ?>
+        
+            <?php 
+                echo $_SESSION["success"];
+                unset($_SESSION["success"]); 
+            ?>
+ <?php endif; ?>
       <?php  // Définir une catégorie par défaut ou une catégorie spécifique
 $currentCategory = isset($categories_systeme[0]) ? $categories_systeme[0] : null; // Par exemple, la première catégorie système
 
@@ -206,6 +220,7 @@ $currentCategory = isset($categories_systeme[0]) ? $categories_systeme[0] : null
                     </div>
                     <div class="task-actions">
                         <button class="task-action-btn" onclick="editTask(<?php echo $tache['id']; ?>)"><i class="fas fa-edit"></i></button>
+                        
                         <button class="task-action-btn" onclick="deleteTask(<?php echo $tache['id']; ?>)"><i class="fas fa-trash"></i></button>
                     </div>
                 </li>
@@ -225,7 +240,7 @@ $currentCategory = isset($categories_systeme[0]) ? $categories_systeme[0] : null
     <form id="add-task-form" action="../Back/ajouttache.php" method="post">
     <div class="add-task-input">
             <i class="fas fa-plus"></i>
-            <input type="text" name="description" placeholder="Ajouter une tâche..." required>
+            <input type="text" name="description" placeholder="Ajouter une tâche..." required id="task-input">
             <input type="hidden" name="categorie_id" id="categorie_id" value="<?php echo $categories_systeme[0]['id']; ?>">
             <div class="task-quick-options">
                 <button type="button" id="date-picker-toggle" class="option-toggle"><i class="far fa-calendar-alt"></i></button>
@@ -294,150 +309,14 @@ $currentCategory = isset($categories_systeme[0]) ? $categories_systeme[0] : null
     </div>
 
     <!-- Modal d'ajout de catégorie -->
-    <div id="add-category-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Ajouter une nouvelle liste</h2>
-            <form action="../Back/ajouter_categorie.php" method="post">
-                <div class="form-group">
-                    <label for="nom-categorie">Nom</label>
-                    <input type="text" id="nom-categorie" name="nom" required>
-                </div>
-                <div class="form-group">
-                    <label for="icone-categorie">Icône</label>
-                    <select id="icone-categorie" name="icone">
-                        <option value="fas fa-list">📝 Liste</option>
-                        <option value="fas fa-home">🏠 Maison</option>
-                        <option value="fas fa-briefcase">💼 Travail</option>
-                        <option value="fas fa-book">📚 Études</option>
-                        <option value="fas fa-shopping-cart">🛒 Courses</option>
-                        <option value="fas fa-plane">✈️ Voyage</option>
-                        <option value="fas fa-heart">❤️ Personnel</option>
-                        <option value="fas fa-star">⭐ Important</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="couleur-categorie">Couleur</label>
-                    <input type="color" id="couleur-categorie" name="couleur" value="#4a6cfa">
-                </div>
-                <button type="submit" class="btn-primary">Ajouter</button>
-            </form>
-        </div>
-    </div>
+   
 
    
 
    
-  <!-- Ajouter ce code avant la fermeture de </body> -->
-<div id="theme-customize-modal" class="modal">
-    <div class="modal-content theme-modal-content">
-        <span class="close">&times;</span>
-        <h2>Personnaliser mon thème</h2>
-        
-        <div class="theme-tabs">
-            <button class="theme-tab active" data-tab="preset">Préréglages</button>
-            <button class="theme-tab" data-tab="custom">Personnalisé</button>
-        </div>
-        
-        <div class="theme-tab-content" id="preset-tab">
-            <div class="preset-themes">
-                <div class="preset-theme" data-theme="light">
-                    <div class="preset-preview">
-                        <div class="preview-sidebar"></div>
-                        <div class="preview-content"></div>
-                    </div>
-                    <span>Clair</span>
-                </div>
-                <div class="preset-theme" data-theme="dark">
-                    <div class="preset-preview">
-                        <div class="preview-sidebar"></div>
-                        <div class="preview-content"></div>
-                    </div>
-                    <span>Sombre</span>
-                </div>
-                <div class="preset-theme" data-theme="blue">
-                    <div class="preset-preview">
-                        <div class="preview-sidebar"></div>
-                        <div class="preview-content"></div>
-                    </div>
-                    <span>Bleu</span>
-                </div>
-                <div class="preset-theme" data-theme="purple">
-                    <div class="preset-preview">
-                        <div class="preview-sidebar"></div>
-                        <div class="preview-content"></div>
-                    </div>
-                    <span>Violet</span>
-                </div>
-                <div class="preset-theme" data-theme="green">
-                    <div class="preset-preview">
-                        <div class="preview-sidebar"></div>
-                        <div class="preview-content"></div>
-                    </div>
-                    <span>Vert</span>
-                </div>
-                <div class="preset-theme" data-theme="pink">
-                    <div class="preset-preview">
-                        <div class="preview-sidebar"></div>
-                        <div class="preview-content"></div>
-                    </div>
-                    <span>Rose</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="theme-tab-content" id="custom-tab" style="display: none;">
-            <div class="color-pickers">
-                <div class="color-picker-group">
-                    <label for="primary-color">Couleur principale</label>
-                    <input type="color" id="primary-color" value="#4a6cfa">
-                </div>
-                <div class="color-picker-group">
-                    <label for="sidebar-color">Couleur de la barre latérale</label>
-                    <input type="color" id="sidebar-color" value="#323131">
-                </div>
-                <div class="color-picker-group">
-                    <label for="main-bg-color">Couleur de fond</label>
-                    <input type="color" id="main-bg-color" value="#f5f5f5">
-                </div>
-                <div class="color-picker-group">
-                    <label for="text-color">Couleur du texte</label>
-                    <input type="color" id="text-color" value="#333333">
-                </div>
-            </div>
-            
-            <div class="preset-palette">
-                <h4>Palettes suggérées</h4>
-                <div class="palette-chips">
-                    <div class="palette-chip" data-colors="#4a6cfa,#323131,#f5f5f5,#333333" title="Palette par défaut">
-                        <span style="background-color: #4a6cfa;"></span>
-                        <span style="background-color: #323131;"></span>
-                        <span style="background-color: #f5f5f5;"></span>
-                    </div>
-                    <div class="palette-chip" data-colors="#5d8eff,#1a1a1a,#2d2d2d,#f5f5f5" title="Palette sombre">
-                        <span style="background-color: #5d8eff;"></span>
-                        <span style="background-color: #1a1a1a;"></span>
-                        <span style="background-color: #2d2d2d;"></span>
-                    </div>
-                    <div class="palette-chip" data-colors="#ff5757,#2d2d2d,#f5f5f5,#333333" title="Palette rouge">
-                        <span style="background-color: #ff5757;"></span>
-                        <span style="background-color: #2d2d2d;"></span>
-                        <span style="background-color: #f5f5f5;"></span>
-                    </div>
-                    <div class="palette-chip" data-colors="#32a852,#1f3d29,#f0fff4,#333333" title="Palette verte">
-                        <span style="background-color: #32a852;"></span>
-                        <span style="background-color: #1f3d29;"></span>
-                        <span style="background-color: #f0fff4;"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="theme-modal-actions">
-            <button id="apply-theme" class="btn-primary">Appliquer</button>
-            <button id="cancel-theme" class="btn-secondary">Annuler</button>
-        </div>
-    </div>
+
+
+    
 
 
     <script>document.addEventListener('DOMContentLoaded', function() {
@@ -461,12 +340,81 @@ $currentCategory = isset($categories_systeme[0]) ? $categories_systeme[0] : null
     } else {
         console.log('Bouton non trouvé!');
     }
+
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+    // Supprimez cette alerte qui bloque l'exécution
+    // alert('JavaScript is executing!');
+    
+    // Éléments du DOM
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const body = document.body;
+    
+    console.log('Menu toggle:', menuToggle);
+    console.log('Sidebar:', sidebar);
+    console.log('Sidebar overlay:', sidebarOverlay);
+    
+    // Fonction pour ouvrir/fermer la sidebar
+    function toggleSidebar() {
+        console.log('Toggling sidebar');
+        sidebar.classList.toggle('sidebar-open');
+        sidebarOverlay.classList.toggle('active');
+        body.style.overflow = sidebar.classList.contains('sidebar-open') ? 'hidden' : '';
+        menuToggle.classList.toggle('active');
+    }
+    
+    // Attacher les écouteurs d'événements avec vérification
+    if (menuToggle) {
+        menuToggle.addEventListener('click', function(e) {
+            console.log('Menu button clicked');
+            e.preventDefault();
+            toggleSidebar();
+        });
+    } else {
+        console.error('Menu toggle button not found!');
+    }
+    
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', function() {
+            console.log('Overlay clicked');
+            toggleSidebar();
+        });
+    } else {
+        console.error('Sidebar overlay not found!');
+    }
+    
+    // Fermer la sidebar lorsqu'on clique sur un élément de la liste
+    const categoryItems = document.querySelectorAll('.category-item');
+    categoryItems.forEach(item => {
+        item.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                toggleSidebar();
+            }
+        });
+    });
+    
+    // Réinitialiser l'état de la sidebar lors du redimensionnement de la fenêtre
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+            sidebar.classList.remove('sidebar-open');
+            menuToggle.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+            body.style.overflow = '';
+        }
+    });
+});
 });</script>
 
 <script src="../js/main.js"></script>
     <script src="../js/interface.js"></script>
     <script src="../js/theme.js"></script>
-    <script src="../js/reponsive.js"></script>
+    <script src="../js/reponsive.js?v=1.0"></script>
+
+    <script src="../js/modal-param.js"></script>
+    <script src="../js/modal-cat.js"></script>
 </div> 
 </body>
-</html>

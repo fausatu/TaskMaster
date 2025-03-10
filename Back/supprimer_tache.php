@@ -23,16 +23,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Vérifier si la tâche a été supprimée
             if ($stmt->rowCount() > 0) {
-                $_SESSION["succes"] = "Tâche supprimée avec succès.";
+                $_SESSION["succes"] = "<div class=''succes>Tâche supprimée avec succès. </div>";
             } else {
-                $_SESSION["erreur"] = "Aucune tâche trouvée avec cet ID ou vous n'avez pas la permission de la supprimer.";
+                $_SESSION["erreur"] = " <div class=''erreur>Aucune tâche trouvée avec cet ID ou vous n'avez pas la permission de la supprimer. </div>";
             }
         } catch (PDOException $e) {
             // Gestion des erreurs
-            $_SESSION["erreur"] = "Erreur lors de la suppression de la tâche : " . $e->getMessage();
+            $_SESSION["erreur"] = "<div class=''erreur>Erreur lors de la suppression de la tâche : " . $e->getMessage() . "</div>";
         }
     } else {
-        $_SESSION["erreur"] = "ID de tâche invalide.";
+        $_SESSION["erreur"] = " <div class=''erreur>ID de tâche invalide. </div>";
     }
 
     // Redirection vers la page principale

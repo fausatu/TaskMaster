@@ -27,6 +27,7 @@ if (isset($_POST)) {
                     $_SESSION['id'] = $user['id_utilisateur'];
                     $_SESSION['nom'] = $user['nom'];
                     $_SESSION['prenom'] = $user['prenom'];
+                    $_SESSION['profil'] = $user['image_profil'];
                     header('location: ../Main/todo.php');
                     $_SESSION['succes'] = "<div id='succes' class='succes'>Bienvenue {$_SESSION['login']}, vous êtes connecté </div>";
                    

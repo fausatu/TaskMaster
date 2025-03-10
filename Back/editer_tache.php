@@ -92,7 +92,7 @@ $stmt->execute([
 
             // Vérifier si la tâche a été mise à jour
             if ($stmt->rowCount() > 0) {
-                $_SESSION["succes"] = "Tâche mise à jour avec succès.";
+                $_SESSION["succes"] = "<div class=''succes>Tâche mise à jour avec succès.</div>";
             } else {
                 $_SESSION["erreur"] = "Aucune tâche trouvée avec cet ID ou aucune modification n'a été apportée.";
             }
@@ -130,7 +130,7 @@ if (isset($_GET['id'])) {
 
             // Vérifier si la tâche existe
             if (!$tache) {
-                $_SESSION["erreur"] = "Tâche non trouvée.";
+                $_SESSION["erreur"] = "<div class='erreur'>Tâche non trouvée.</div>";
                 header("location:../Main/todo.php");
                 exit();
             }
@@ -141,22 +141,22 @@ if (isset($_GET['id'])) {
             $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             if (empty($categories)) {
-                $_SESSION["erreur"] = "Vous devez créer au moins une catégorie avant de pouvoir éditer une tâche.";
+                $_SESSION["erreur"] = "<div class='erreur'>Vous devez créer au moins une catégorie avant de pouvoir éditer une tâche.</div>";
                 header("location:../Main/todo.php");
                 exit();
             }
         } catch (PDOException $e) {
-            $_SESSION["erreur"] = "Erreur lors de la récupération des données : " . $e->getMessage();
+            $_SESSION["erreur"] = "<div class='erreur'>Erreur lors de la récupération des données : " . $e->getMessage() . "</div>";
             header("location:../Main/todo.php");
             exit();
         }
     } else {
-        $_SESSION["erreur"] = "ID de tâche invalide.";
+        $_SESSION["erreur"] = "<div class='erreur'>ID de tâche invalide. Veuillez réessayer.</div>";
         header("location:../Main/todo.php");
         exit();
     }
 } else {
-    $_SESSION["erreur"] = "Aucun ID de tâche spécifié.";
+    $_SESSION["erreur"] = "<div class='erreur'> Aucun ID de tâche spécifié. Veuillez réessayer.</div>";
     header("location:../Main/todo.php");
     exit();
 }
@@ -226,20 +226,22 @@ if (isset($_GET['id'])) {
     <div class="container">
         <h2>Éditer la Tâche</h2>
         <?php if (isset($_SESSION["erreur"])): ?>
-            <div class="alert alert-danger">
+            
                 <?php 
                     echo $_SESSION["erreur"];
                     unset($_SESSION["erreur"]); 
                 ?>
-            </div>
+            
         <?php endif; ?>
         <?php if (isset($_SESSION["succes"])): ?>
-            <div class="alert alert-success">
+        
                 <?php 
                     echo $_SESSION["succes"];
                     unset($_SESSION["succes"]); 
                 ?>
-            </div>
+           
+
+           
         <?php endif; ?>
         
         <form action="editer_tache.php" method="post">

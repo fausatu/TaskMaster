@@ -122,7 +122,7 @@ body.theme-dark {
     --sidebar-bg: #1a1a1a;
     --main-bg: #2d2d2d;
     --task-bg: #3a3a3a;
-    --text-color: #f0eaea;
+    --text-color: #f8ebeb;
     --text-secondary: #cdc2c2;
     --border-color: #444444;
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -131,11 +131,11 @@ body.theme-dark {
 /* Appliquer le thème bleu */
 body.theme-blue {
     --primary-color: #0070e0;
-    --sidebar-bg: #619ab5;
+    --sidebar-bg: #b2d6e6;
     --main-bg: #619ab5;
     --task-bg: #ffffff;
-    --text-color: #333333;
-    --text-secondary: #555555;
+    --text-color: #040303;
+    --text-secondary: #4d4a4a;
     --border-color: #d0e7ff;
     --shadow: 0 4px 12px rgba(0, 112, 224, 0.1);
 }
@@ -143,16 +143,16 @@ body.theme-blue {
 /* Appliquer le thème violet */
 body.theme-purple {
     --primary-color: #7e3ff2;
-    --sidebar-bg: #432874;
-    --main-bg: #f8f0ff;
-    --task-bg: #ffffff;
+    --sidebar-bg:  #f8f0ff;
+    --main-bg: #432874 ;
+    --task-bg: #f8f5f5;
     --text-color: #100d0d;
     --text-secondary: #666666;
     --border-color: #e9d8ff;
     --shadow: 0 4px 12px rgba(126, 63, 242, 0.08);
 }
 
-/* Modifications du CSS existant pour prendre en compte les variables de thème */
+
 body {
     background-color: var(--main-bg);
 }
@@ -573,8 +573,8 @@ body.theme-green {
 
 body.theme-red {
     --primary-color: #e74856;
-    --sidebar-bg: #e33636;
-    --main-bg: #e33636;
+    --sidebar-bg: #ed6868;
+    --main-bg: #ae4949;
     --task-bg: #ffffff;
     --text-color: #333333;
     --text-secondary: #666666;
@@ -784,7 +784,7 @@ body.theme-dark.theme-teal {
 :root {
     /* Couleurs par défaut (thème clair) */
     --primary-color: #4a6cfa;
-    --sidebar-bg: #f8f8f8;
+    --sidebar-bg: #080808;
     --main-bg: #ffffff;
     --text-color: #333333;
     --task-item-bg: #ffffff;
@@ -811,8 +811,8 @@ body.theme-dark.theme-teal {
     --task-item-bg: #ffffff;
     --task-item-border: #e0e0e0;
     --checkbox-border: #aaaaaa;
-    --category-hover: rgba(46, 109, 147, 0.05);
-    --category-active: rgba(74, 108, 250, 0.1);
+    --category-hover: rgba(45, 166, 241, 0.05);
+    --category-active: rgba(25, 64, 218, 0.1);
     --dropdown-bg: #ffffff;
     --dropdown-shadow: rgba(0, 0, 0, 0.1);
     --input-bg: #ffffff;
@@ -832,8 +832,8 @@ body.theme-dark.theme-teal {
     --task-item-bg: #333333;
     --task-item-border: #444444;
     --checkbox-border: #666666;
-    --category-hover: rgba(255, 255, 255, 0.05);
-    --category-active: rgba(93, 142, 255, 0.2);
+    --category-hover: rgba(164, 161, 161, 0.05);
+    --category-active: rgba(104, 145, 242, 0.2);
     --dropdown-bg: #333333;
     --dropdown-shadow: rgba(0, 0, 0, 0.3);
     --input-bg: #3a3a3a;
@@ -866,8 +866,8 @@ body.theme-dark.theme-teal {
     --task-item-bg: #ffffff;
     --task-item-border: #e0d6f0;
     --checkbox-border: #b59ece;
-    --category-hover: rgba(135, 99, 184, 0.05);
-    --category-active: rgba(135, 99, 184, 0.1);
+    --category-hover: rgba(181, 145, 232, 0.05);
+    --category-active: rgba(208, 184, 242, 0.1);
     --dropdown-bg: #ffffff;
     --dropdown-shadow: rgba(0, 0, 0, 0.1);
     --input-bg: #ffffff;
@@ -883,8 +883,8 @@ body.theme-dark.theme-teal {
     --task-item-bg: #ffffff;
     --task-item-border: #d0ead9;
     --checkbox-border: #7cc69f;
-    --category-hover: rgba(16, 124, 65, 0.05);
-    --category-active: rgba(16, 124, 65, 0.1);
+    --category-hover: rgba(187, 246, 213, 0.05);
+    --category-active: rgba(190, 226, 207, 0.1);
     --dropdown-bg: #ffffff;
     --dropdown-shadow: rgba(0, 0, 0, 0.1);
     --input-bg: #ffffff;
@@ -900,8 +900,8 @@ body.theme-dark.theme-teal {
     --task-item-bg: #ffffff;
     --task-item-border: #fad0d3;
     --checkbox-border: #f1a0a7;
-    --category-hover: rgba(231, 72, 86, 0.05);
-    --category-active: rgba(231, 72, 86, 0.1);
+    --category-hover: rgba(243, 135, 144, 0.05);
+    --category-active: rgba(238, 141, 149, 0.1);
     --dropdown-bg: #ffffff;
     --dropdown-shadow: rgba(0, 0, 0, 0.1);
     --input-bg: #ffffff;
@@ -996,7 +996,7 @@ body {
     transition: all 0.3s ease;
 }
 
-input[type="text"], 
+/* input[type="text"], 
 input[type="email"], 
 input[type="password"],
 select, 
@@ -1005,7 +1005,8 @@ textarea {
     border: 1px solid var(--input-border);
     color: var(--text-color);
     transition: all 0.3s ease;
-}
+    
+} */
 
 .btn-primary {
     background-color: var(--primary-color);

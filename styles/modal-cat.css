@@ -1,0 +1,86 @@
+/* Modal Styles */
+
+.modal-cat {
+    display: none; /* Hide the modal by default */
+
+   
+    position: fixed;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    
+   
+}
+
+.modal-cat .modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    animation: modalOpen 0.3s ease;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    .modal-cat .modal-content {
+        width: 90%; /* Adjust width for mobile */
+        padding: 15px; /* Adjust padding for mobile */
+    }
+}
+
+
+@keyframes modalOpen {
+    from {opacity: 0; transform: translateY(-20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-cat .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-cat .close:hover {
+    color: black;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-primary:hover {
+    background-color: #395be0;
+}

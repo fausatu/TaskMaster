@@ -52,9 +52,6 @@ Share
 
 
 
-Retry
-FA
-function toggleTaskStatus(taskId, isChecked) {     fetch('modifier_statut_tache.php', {         method: 'POST',         headers: {             'Content-Type': 'application/x-www-form-urlencoded',         },         body: id=${taskId}&terminee=${isChecked ? 1 : 0}     })     .then(response => response.json())     .then(data => {         if (data.success) {             // Animation de suppression si la tâche est terminée             if (isChecked) {                 setTimeout(() => {                     const taskElement = document.querySelector(.task-item[data-id="${taskId}"]);                     if (taskElement) {                         taskElement.style.opacity = "0";                         setTimeout(() => {                             taskElement.remove();                         }, 300);                     }                 }, 1000);             }         }     })     .catch(error => console.error('Erreur:', error)); } ce code permet de modfier une tache juste ou son statu aussi
 
 
 

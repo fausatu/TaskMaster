@@ -1,25 +1,24 @@
-// Assurez-vous que ce code est ajouté à votre fichier reponsive.js
 document.addEventListener('DOMContentLoaded', function() {
+    // Supprimez cette alerte qui bloque l'exécution
+    // alert('JavaScript is executing!');
+    
     // Éléments du DOM
     const menuToggle = document.getElementById('menuToggle');
     const sidebar = document.querySelector('.sidebar');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
     const body = document.body;
     
-    // Vérifions que les éléments sont bien trouvés
     console.log('Menu toggle:', menuToggle);
     console.log('Sidebar:', sidebar);
     console.log('Sidebar overlay:', sidebarOverlay);
     
     // Fonction pour ouvrir/fermer la sidebar
     function toggleSidebar() {
-        const sidebar = document.querySelector('.sidebar');
-        const sidebarOverlay = document.getElementById('sidebarOverlay');
-        const body = document.body;
-    
+        console.log('Toggling sidebar');
         sidebar.classList.toggle('sidebar-open');
         sidebarOverlay.classList.toggle('active');
         body.style.overflow = sidebar.classList.contains('sidebar-open') ? 'hidden' : '';
+        menuToggle.classList.toggle('active');
     }
     
     // Attacher les écouteurs d'événements avec vérification
@@ -29,6 +28,8 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             toggleSidebar();
         });
+    } else {
+        console.error('Menu toggle button not found!');
     }
     
     if (sidebarOverlay) {
@@ -36,6 +37,8 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Overlay clicked');
             toggleSidebar();
         });
+    } else {
+        console.error('Sidebar overlay not found!');
     }
     
     // Fermer la sidebar lorsqu'on clique sur un élément de la liste
@@ -55,7 +58,6 @@ document.addEventListener('DOMContentLoaded', function() {
             menuToggle.classList.remove('active');
             sidebarOverlay.classList.remove('active');
             body.style.overflow = '';
-            menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
         }
     });
 });
