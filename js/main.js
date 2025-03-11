@@ -370,7 +370,6 @@ function updateTasksUI(data) {
         });
     }
 }
-
 // Exposer les fonctions nécessaires globalement
 window.toggleTaskStatus = toggleTaskStatus;
 window.deleteTask = deleteTask;

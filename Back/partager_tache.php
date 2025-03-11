@@ -1,8 +1,6 @@
 <?php
 session_start();
 include("bd.php");
-
-// Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['id'])) {
     echo json_encode(['success' => false, 'error' => 'Utilisateur non connecté.']);
     exit;
@@ -94,6 +92,5 @@ try {
     $cnx->commit(); // Valider la transaction
     echo json_encode(['success' => true]);
 } catch (PDOException $e) {
-    $cnx->rollBack(); // Annuler la transaction en cas d'erreur
     echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }
