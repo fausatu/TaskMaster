@@ -269,11 +269,11 @@ body {
 .succes {
     padding: 15px;
     background-color: rgba(116, 236, 124, 0.2);
-    color: #1e7e26;
+    color: #f5f9f5;
     border-left: 4px solid #74ec7c;
     border-radius: 5px;
     margin-bottom: 20px;
-    font-weight: 500;
+    font-weight: bolder;
     text-align: center;
 }
 
@@ -637,4 +637,25 @@ input:checked ~ .task-content .task-title {
     .floating-options {
         width: 90%;
     }
+}
+/* Add this to your main.css file */
+.shared-badge {
+    display: inline-flex;
+    align-items: center;
+    background-color: rgba(0, 123, 255, 0.1);
+    color: #007bff;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 0.8em;
+    margin-left: 5px;
+}
+
+.shared-badge i {
+    margin-right: 3px;
+}
+
+/* Style for disabled checkboxes */
+.task-checkbox input[type="checkbox"]:disabled + .checkbox-custom {
+    opacity: 0.5;
+    cursor: not-allowed;
 }

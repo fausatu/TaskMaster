@@ -318,11 +318,11 @@ function updateCategoryTitle(categoryName) {
     }
 }
 
-// 11. Fonction UNIQUE pour mettre à jour l'interface des tâches
+// 11. Fonction pour mettre à jour l'interface des tâches
+// Dans la fonction updateTasksUI
 function updateTasksUI(data) {
     const taskList = document.querySelector('.task-list');
     if (!taskList) return;
-
     taskList.innerHTML = ''; // Vider la liste actuelle
     
     // Si nous n'avons pas de tâches mais un message
@@ -345,11 +345,39 @@ function updateTasksUI(data) {
             taskItem.className = 'task-item';
             taskItem.setAttribute('data-id', task.id);
             taskItem.style.borderLeftColor = task.categorie_couleur;
-
+            
+            // Correction 1: Amélioration de la détection des tâches partagées
+            // Vérifier explicitement les propriétés pour éviter les undefined
+            const isSharedTask = task.is_shared === 1 || task.is_shared === '1';
+            const isInSharedCategory = task.categorie_nom === 'Taches partagees';
+            const isShared = isSharedTask || isInSharedCategory;
+            
+            // Correction 2: Gestion améliorée des permissions
+            // Par défaut, l'utilisateur peut modifier, sauf indications contraires
+            let canModify = true;
+            
+            if (isShared) {
+                // Pour les tâches partagées explicitement
+                if (isSharedTask && task.permissions === 'lecture') {
+                    canModify = false;
+                }
+                // Pour les tâches dans la catégorie partagée
+                if (isInSharedCategory && task.permissions === 'lecture') {
+                    canModify = false;
+                }
+            }
+            
+            // Correction 3: S'assurer que le badge s'affiche correctement
+            let sharedInfo = '';
+            if (isShared) {
+                const sharedByName = task.shared_by ? task.shared_by : 'Partagé';
+                sharedInfo = `<span class="shared-badge"><i class="fas fa-share-alt"></i> ${sharedByName}</span>`;
+            }
+            
             taskItem.innerHTML = `
                 <label class="task-checkbox">
                     <input type="checkbox" ${task.terminee == 1 ? 'checked' : ''} 
-                           onchange="toggleTaskStatus(${task.id}, this.checked)">
+                           onchange="toggleTaskStatus(${task.id}, this.checked)" ${canModify ? '' : 'disabled'}>
                     <span class="checkbox-custom"></span>
                 </label>
                 <div class="task-content">
@@ -358,12 +386,13 @@ function updateTasksUI(data) {
                         <span><i class="far fa-calendar"></i> ${new Date(task.date_echeance).toLocaleDateString('fr-FR')}</span>
                         ${task.heure_echeance ? `<span><i class="far fa-clock"></i> ${task.heure_echeance}</span>` : ''}
                         <span><i class="fas fa-tag" style="color: ${task.categorie_couleur};"></i> ${task.categorie_nom}</span>
+                        ${sharedInfo}
                     </div>
                 </div>
                 <div class="task-actions">
-                    <button class="task-action-btn" onclick="editTask(${task.id})"><i class="fas fa-edit"></i></button>
+                    ${canModify ? `<button class="task-action-btn" onclick="editTask(${task.id})"><i class="fas fa-edit"></i></button>` : ''}
                     <button class="task-action-btn" onclick="shareTask(${task.id})"><i class="fas fa-share-alt"></i></button>
-                    <button class="task-action-btn" onclick="deleteTask(${task.id})"><i class="fas fa-trash"></i></button>
+                    ${canModify ? `<button class="task-action-btn" onclick="deleteTask(${task.id})"><i class="fas fa-trash"></i></button>` : ''}
                 </div>
             `;
             taskList.appendChild(taskItem);

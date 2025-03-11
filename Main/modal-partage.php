@@ -21,7 +21,7 @@
                 <label for="permissions">Permissions :</label>
                 <select id="permissions" name="permissions" required>
                     <option value="lecture">Lecture seule</option>
-                    <option value="ecriture">Lecture et écriture</option>
+                    <option value="modification">Lecture et écriture</option>
                 </select>
             </div>
             <button type="submit" class="btn">Partager</button>

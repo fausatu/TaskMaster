@@ -1,52 +1,62 @@
-<?php 
-session_start(); 
-require_once("../Back/bd.php");
-
-$categoryId = $_GET['category_id']; 
-$utilisateur_id = $_SESSION['id'];
-
-// Get tasks for selected category
-$stmt = $cnx->prepare("SELECT t.*, c.nom as categorie_nom, c.couleur as categorie_couleur
-                       FROM taches t
-                       JOIN categories c ON t.categorie_id = c.id
-                       WHERE t.utilisateur_id = :utilisateur_id 
-                       AND (t.categorie_id = :categorie_id OR 
-                            (:categorie_id = 0 AND t.date_echeance = CURDATE()))
-                       ORDER BY t.id DESC");
-$stmt->execute([
-    ':utilisateur_id' => $utilisateur_id,
-    ':categorie_id' => $categoryId 
-]);
-$tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Get category name
-$stmt = $cnx->prepare("SELECT nom FROM categories WHERE id = :categorie_id");
-$stmt->execute([':categorie_id' => $categoryId]);
-$categoryName = $stmt->fetchColumn();
-
-// Custom message for empty categories
-$message = '';
-if (empty($tasks)) {
-    switch ($categoryName) {
-        case 'Aujourd\'hui':
-            $message = 'Aucune tâche pour aujourd\'hui. Profitez de votre journée !';
-            break;
-        case 'Important':
-            $message = 'Aucune tâche importante pour le moment.';
-            break;
-        case 'Planifiées':
-            $message = 'Aucune tâche planifiée.';
-            break;
-        default:
-            $message = 'Cette catégorie est vide.';
-            break;
-    }
+<?php
+session_start();
+include("bd.php");
+if (!isset($_SESSION['id'])) {
+    echo json_encode(['success' => false, 'error' => 'Utilisateur non connecté.']);
+    exit;
 }
-
-// Return JSON response
-echo json_encode([
-    'categoryName' => $categoryName,
-    'tasks' => $tasks,
-    'message' => $message 
-]);
-?>
+$categoryId = isset($_GET['category_id']) ? intval($_GET['category_id']) : 0;
+try {
+    $userId = $_SESSION['id'];
+    
+    // Requête pour récupérer les tâches avec les informations de partage
+    $query = "
+        SELECT 
+            t.id, t.description, t.date_creation, t.date_echeance, t.heure_echeance, 
+            t.terminee, t.categorie_id, c.nom as categorie_nom, c.couleur as categorie_couleur,
+            CASE WHEN tp.tache_id IS NOT NULL THEN 1 ELSE 0 END as is_shared,
+            tp.permissions,
+            CONCAT(u.prenom, ' ', u.nom) as shared_by
+        FROM 
+            taches t
+        JOIN 
+            categories c ON t.categorie_id = c.id
+        LEFT JOIN 
+            taches_partagees tp ON t.id = tp.tache_id
+        LEFT JOIN 
+            utilisateurs u ON tp.partage_par = u.id_utilisateur
+        WHERE 
+            t.utilisateur_id = ? 
+            AND (c.id = ? OR ? = 0)
+            AND (t.terminee = 0 OR 
+                (t.terminee = 1 AND DATE(t.date_modification) = CURDATE()))
+        ORDER BY 
+            t.date_echeance ASC, t.heure_echeance ASC
+    ";
+    
+    $stmt = $cnx->prepare($query);
+    $stmt->execute([$userId, $categoryId, $categoryId]);
+    $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    $message = '';
+    if (empty($tasks)) {
+        // Message personnalisé selon la catégorie
+        if ($categoryId == 1) { // Si c'est la catégorie "Aujourd'hui"
+            $message = "Aucune tâche pour aujourd'hui. Profitez de votre journée!";
+        } elseif ($categoryId == 2) { // Si c'est "À venir"
+            $message = "Pas de tâches à venir. Votre planning est libre!";
+        } else {
+            $message = "Aucune tâche dans cette catégorie. Vous êtes à jour!";
+        }
+    }
+    
+    echo json_encode([
+        'success' => true,
+        'tasks' => $tasks,
+        'message' => $message,
+        'category_id' => $categoryId
+    ]);
+    
+} catch (PDOException $e) {
+    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+}

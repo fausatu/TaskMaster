@@ -5,92 +5,59 @@ if (!isset($_SESSION['id'])) {
     echo json_encode(['success' => false, 'error' => 'Utilisateur non connecté.']);
     exit;
 }
-
-// Récupérer l'ID de la catégorie "Tâches partagées"
-$query = "SELECT id FROM categories WHERE nom = 'Taches partagees'";
-$prepare = $cnx->prepare($query);
-$prepare->execute();
-$categorie = $prepare->fetch(PDO::FETCH_ASSOC);
-$categorie_id = $categorie['id'];
-
-// Récupérer et valider les données
-$data = json_decode(file_get_contents('php://input'), true);
-
-if (empty($data['taskId']) || empty($data['sharedUserEmail']) || empty($data['permissions'])) {
-    echo json_encode(['success' => false, 'error' => 'Données manquantes ou invalides.']);
-    exit;
-}
-
-$taskId = intval($data['taskId']);
-$sharedUserEmail = filter_var($data['sharedUserEmail'], FILTER_VALIDATE_EMAIL);
-$permissions = htmlspecialchars($data['permissions']);
-
-if (!$sharedUserEmail) {
-    echo json_encode(['success' => false, 'error' => 'Adresse e-mail invalide.']);
-    exit;
-}
-
-// Valider les permissions
-$allowedPermissions = ['lecture', 'modification'];
-if (!in_array($permissions, $allowedPermissions)) {
-    echo json_encode(['success' => false, 'error' => 'Permissions invalides.']);
-    exit;
-}
-
+$categoryId = isset($_GET['category_id']) ? intval($_GET['category_id']) : 0;
 try {
-    $cnx->beginTransaction();
-
-    // 1. Récupérer l'ID de l'utilisateur avec qui partager
-    $query = "SELECT id_utilisateur FROM utilisateurs WHERE email = ?";
-    $stmt = $cnx->prepare($query);
-    $stmt->execute([$sharedUserEmail]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if (!$user) {
-        echo json_encode(['success' => false, 'error' => 'Aucun utilisateur trouvé avec cet e-mail.']);
-        $cnx->rollBack();
-        exit;
-    }
-    $sharedUserId = $user['id_utilisateur'];
-
-    // 2. Récupérer les détails de la tâche à partager
-    $query = "SELECT description, date_creation, date_echeance, heure_echeance, date_rappel 
-              FROM taches WHERE id = ?";
-    $stmt = $cnx->prepare($query);
-    $stmt->execute([$taskId]);
-    $task = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if (!$task) {
-        echo json_encode(['success' => false, 'error' => 'Tâche non trouvée.']);
-        $cnx->rollBack();
-        exit;
-    }
-
-    // 3. Créer une nouvelle tâche dans la table `taches` avec la catégorie "Tâches partagées"
+    $userId = $_SESSION['id'];
+    
+    
     $query = "
-        INSERT INTO taches (description, date_creation, date_echeance, heure_echeance, date_rappel, categorie_id, utilisateur_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        SELECT 
+            t.id, t.description, t.date_creation, t.date_echeance, t.heure_echeance, 
+            t.terminee, t.categorie_id, c.nom as categorie_nom, c.couleur as categorie_couleur,
+            CASE WHEN tp.tache_id IS NOT NULL THEN 1 ELSE 0 END as is_shared,
+            tp.permissions,
+            CONCAT(u.prenom, ' ', u.nom) as shared_by,
+            (SELECT nom FROM utilisateurs WHERE id_utilisateur = tp.partage_par) as shared_by_name
+        FROM 
+            taches t
+        JOIN 
+            categories c ON t.categorie_id = c.id
+        LEFT JOIN 
+            taches_partagees tp ON (t.id = tp.tache_id OR t.id = tp.tache_originale_id)
+        LEFT JOIN 
+            utilisateurs u ON tp.partage_par = u.id_utilisateur
+        WHERE 
+            t.utilisateur_id = ? 
+            AND (c.id = ? OR ? = 0)
+            AND (t.terminee = 0 OR 
+                (t.terminee = 1 AND DATE(t.date_modification) = CURDATE()))
+        ORDER BY 
+            t.date_echeance ASC, t.heure_echeance ASC
     ";
+    
     $stmt = $cnx->prepare($query);
-    $stmt->execute([
-        $task['description'],
-        $task['date_creation'],
-        $task['date_echeance'],
-        $task['heure_echeance'],
-        $task['date_rappel'],
-        $categorie_id, // Catégorie "Tâches partagées"
-        $sharedUserId // L'utilisateur avec qui la tâche est partagée
+    $stmt->execute([$userId, $categoryId, $categoryId]);
+    $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    $message = '';
+    if (empty($tasks)) {
+        // Message personnalisé selon la catégorie
+        if ($categoryId == 1) { // Si c'est la catégorie "Aujourd'hui"
+            $message = "Aucune tâche pour aujourd'hui. Profitez de votre journée!";
+        } elseif ($categoryId == 2) { // Si c'est "À venir"
+            $message = "Pas de tâches à venir. Votre planning est libre!";
+        } else {
+            $message = "Aucune tâche dans cette catégorie. Vous êtes à jour!";
+        }
+    }
+    
+    echo json_encode([
+        'success' => true,
+        'tasks' => $tasks,
+        'message' => $message,
+        'category_id' => $categoryId
     ]);
-
-    $newTaskId = $cnx->lastInsertId(); // Récupérer l'ID de la nouvelle tâche
-
-    // 4. Enregistrer le partage dans la table `taches_partagees`
-    $query = "INSERT INTO taches_partagees (tache_id, utilisateur_id, partage_par, permissions) VALUES (?, ?, ?, ?)";
-    $stmt = $cnx->prepare($query);
-    $stmt->execute([$taskId, $sharedUserId, $_SESSION['id'], $permissions]); // Utiliser $_SESSION['id'] pour partage_par
-
-    $cnx->commit(); // Valider la transaction
-    echo json_encode(['success' => true]);
+    
 } catch (PDOException $e) {
     echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }

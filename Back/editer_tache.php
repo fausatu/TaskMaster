@@ -26,12 +26,7 @@ function isValidDate($date) {
 }
 
 // Fonction pour valider le format d'heure (HH:MM)
-function isValidTime($time) {
-    if (empty($time)) {
-        return true; // L'heure est optionnelle
-    }
-    return preg_match('/^([01][0-9]|2[0-3]):([0-5][0-9])$/', $time);
-}
+
 
 // Traitement du formulaire
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -57,23 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "Format de date invalide.";
     }
 
-    if (!isValidTime($heure_echeance)) {
-        $errors[] = "Format d'heure invalide.";
-    }
+ 
 
     if ($categorie_id <= 0) {
         $errors[] = "Catégorie invalide.";
-    } else {
-        // Vérifier que la catégorie appartient bien à l'utilisateur
-        try {
-            $stmt = $cnx->prepare("SELECT COUNT(*) FROM categories WHERE id = ? AND utilisateur_id = ?");
-            $stmt->execute([$categorie_id, $_SESSION['id']]);
-            if ($stmt->fetchColumn() == 0) {
-                $errors[] = "Catégorie non autorisée.";
-            }
-        } catch (PDOException $e) {
-            $errors[] = "Erreur lors de la vérification de la catégorie: " . $e->getMessage();
-        }
     }
 
     // Si aucune erreur, procéder à la mise à jour
@@ -81,26 +63,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             // Préparer la requête de mise à jour
             $terminee = isset($tache['terminee']) ? $tache['terminee'] : 0; // Récupérer la valeur actuelle
-$stmt = $cnx->prepare("UPDATE taches SET description = ?, date_echeance = ?, heure_echeance = ?, categorie_id = ?, terminee = ?, date_modification = NOW() WHERE id = ? AND utilisateur_id = ?");
-$stmt->execute([
-    $description,
-    $date_echeance,
-    $heure_echeance,
-    $categorie_id,
-    $terminee,
-    $tache_id,
-    $_SESSION['id']
-]);
+            $stmt = $cnx->prepare("UPDATE taches SET description = ?, date_echeance = ?, heure_echeance = ?, categorie_id = ?, terminee = ?, date_modification = NOW() WHERE id = ? AND utilisateur_id = ?");
+            $stmt->execute([
+                $description,
+                $date_echeance,
+                $heure_echeance,
+                $categorie_id,
+                $terminee,
+                $tache_id,
+                $_SESSION['id']
+            ]);
 
             // Vérifier si la tâche a été mise à jour
             if ($stmt->rowCount() > 0) {
-                $_SESSION["succes"] = "<div class=''succes>Tâche mise à jour avec succès.</div>";
+                $_SESSION["succes"] = "<div class='succes'>Tâche mise à jour avec succès.</div>";
             } else {
-                $_SESSION["erreur"] = "Aucune tâche trouvée avec cet ID ou aucune modification n'a été apportée.";
+                $_SESSION["erreur"] = "<div class='succes'>Aucune modification n'a été apportée.</div>";
             }
         } catch (PDOException $e) {
             // Gestion des erreurs
-            $_SESSION["erreur"] = "Erreur lors de la mise à jour de la tâche : " . $e->getMessage();
+            $_SESSION["erreur"] = "<div class='succes'>Erreur lors de la mise à jour de la tâche : " . $e->getMessage(). "</div>";
         }
     } else {
         $_SESSION["erreur"] = implode("<br>", $errors);
@@ -137,16 +119,15 @@ if (isset($_GET['id'])) {
                 exit();
             }
 
-            // Charger les catégories pour le sélecteur
-            $stmt = $cnx->prepare("SELECT * FROM categories WHERE utilisateur_id = ? ORDER BY nom");
+            // Charger les catégories système et personnalisées de l'utilisateur
+            $stmt = $cnx->prepare("
+                SELECT * FROM categories 
+                WHERE utilisateur_id IS NULL OR utilisateur_id = ?
+                ORDER BY nom
+            ");
             $stmt->execute([$_SESSION['id']]);
             $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if (empty($categories)) {
-                $_SESSION["erreur"] = "<div class='erreur'>Vous devez créer au moins une catégorie avant de pouvoir éditer une tâche.</div>";
-                header("location:../Main/todo.php");
-                exit();
-            }
         } catch (PDOException $e) {
             $_SESSION["erreur"] = "<div class='erreur'>Erreur lors de la récupération des données : " . $e->getMessage() . "</div>";
             header("location:../Main/todo.php");
@@ -162,6 +143,8 @@ if (isset($_GET['id'])) {
     header("location:../Main/todo.php");
     exit();
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -170,7 +153,7 @@ if (isset($_GET['id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Éditer Tâche - TaskFlow</title>
-    <link rel="stylesheet" href="../css/styles.css">
+  
     <style>
         /* Styles additionnels en cas de problème avec le fichier CSS externe */
         .container {
@@ -227,24 +210,11 @@ if (isset($_GET['id'])) {
 <body>
     <div class="container">
         <h2>Éditer la Tâche</h2>
-        <?php if (isset($_SESSION["erreur"])): ?>
-            
-                <?php 
-                    echo $_SESSION["erreur"];
-                    unset($_SESSION["erreur"]); 
-                ?>
-            
-        <?php endif; ?>
-        <?php if (isset($_SESSION["succes"])): ?>
-        
-                <?php 
-                    echo $_SESSION["succes"];
-                    unset($_SESSION["succes"]); 
-                ?>
+     
            
 
            
-        <?php endif; ?>
+     
         
         <form action="editer_tache.php" method="post">
             <input type="hidden" name="id" value="<?php echo htmlspecialchars($tache['id']); ?>">
