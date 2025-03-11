@@ -1,4 +1,3 @@
-// JavaScript pour le modal de paramètres
 document.addEventListener('DOMContentLoaded', function() {
     // Vérifier si nous sommes sur une page où le bouton de paramètres existe
     const settingsIcon = document.querySelector('.settings-icon');

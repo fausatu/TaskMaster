@@ -139,9 +139,6 @@ $currentCategory = isset($categories_systeme[0]) ? $categories_systeme[0] : null
             </div>
     
 
-            <!-- Ajouter dans la sidebar, après la div user-profile -->
-<!-- HTML pour le sélecteur de thèmes style Microsoft To Do -->
-<!-- Remplacer le large sélecteur de thème par ce petit bouton dans la sidebar -->
 <div class="theme-toggle">
     <button class="theme-toggle-btn" title="Options de thème">
         <i class="fas fa-ellipsis-h"></i>
@@ -219,9 +216,15 @@ $currentCategory = isset($categories_systeme[0]) ? $categories_systeme[0] : null
                         </div>
                     </div>
                     <div class="task-actions">
-                        <button class="task-action-btn" onclick="editTask(<?php echo $tache['id']; ?>)"><i class="fas fa-edit"></i></button>
-                        
-                        <button class="task-action-btn" onclick="deleteTask(<?php echo $tache['id']; ?>)"><i class="fas fa-trash"></i></button>
+                        <button class="task-action-btn" onclick="editTask(<?php echo $tache['id']; ?>)">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="task-action-btn" onclick="shareTask(<?php echo $tache['id']; ?>)">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                        <button class="task-action-btn" onclick="deleteTask(<?php echo $tache['id']; ?>)">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </div>
                 </li>
                 <?php endforeach; ?>
@@ -308,7 +311,9 @@ $currentCategory = isset($categories_systeme[0]) ? $categories_systeme[0] : null
 </div>
     </div>
 
-    <!-- Modal d'ajout de catégorie -->
+    <!-- Modal de partage  -->
+
+      <?php include("modal-partage.php"); ?>
    
 
    
@@ -416,5 +421,7 @@ $currentCategory = isset($categories_systeme[0]) ? $categories_systeme[0] : null
 
     <script src="../js/modal-param.js"></script>
     <script src="../js/modal-cat.js"></script>
+    <script src="../js/modal-partage.js"></script>
+
 </div> 
 </body>

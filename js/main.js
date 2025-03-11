@@ -362,6 +362,7 @@ function updateTasksUI(data) {
                 </div>
                 <div class="task-actions">
                     <button class="task-action-btn" onclick="editTask(${task.id})"><i class="fas fa-edit"></i></button>
+                    <button class="task-action-btn" onclick="shareTask(${task.id})"><i class="fas fa-share-alt"></i></button>
                     <button class="task-action-btn" onclick="deleteTask(${task.id})"><i class="fas fa-trash"></i></button>
                 </div>
             `;

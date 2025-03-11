@@ -22,10 +22,10 @@ $categories_perso = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Compter les tâches pour chaque catégorie système
 foreach ($categories_systeme as &$categorie) {
-    $stmt = $cnx->prepare("SELECT COUNT(*) FROM taches WHERE categorie_id = :categorie_id ");   
-     $stmt->execute([
+    $stmt = $cnx->prepare("SELECT COUNT(*) FROM taches WHERE categorie_id = :categorie_id and utilisateur_id = :id_utilisateur");
+    $stmt->execute([
         ':categorie_id' => $categorie['id'],
-        
+        ':id_utilisateur' => $utilisateur_id   
     ]);
     $categorie['nombre_taches'] = $stmt->fetchColumn();
 }

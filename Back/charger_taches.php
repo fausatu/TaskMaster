@@ -1,52 +1,4 @@
 
-
-Start new chat
-Chats
-Recents
-Dynamically Updating Task List by Category
-Fixing Task Category and Display Issues in TaskMaster
-Feedback on TaskMaster Web App
-Improved Date and Time Notification Selection
-Completing a Task Management Web App
-Customizable Category-Specific Content Display
-Database Structure for Task Management App
-Implementing PWA Functionality for a Todo List
-Integrating Google Sign-In to Your App
-Updating PWA manifest and index.html files
-Python Web Development Example with Flask
-Introduction to AJAX and JavaScript for Beginners
-Networking System Programming Exam
-Updating to Windows 11 22H2 - Partition Error
-Fixing Undefined Index Errors in Student Dashboard
-Creating a Local Network with a Switch
-Student Bulletin Download Page
-Designing a Visually Appealing User Page
-Expanding the Fast&Delices Admin Dashboard
-Elegant Admin Dashboard Styling
-Improving Delivery Driver Dashboard Design
-Troubleshooting redirect to recap.php after order placement
-Optimizing a Restaurant Ordering System
-Optimizing Web Design and Performance
-Incomplete Restaurant Menu PHP Code
-Fast Food Database and Admin/Client Interface
-Architecture of 2G, 3G, 4G, and 5G Cellular Networks
-Handling Multiple Control Notes for Students
-Single-Page Student Dashboard
-Reviewing Security and Implementation of Teacher Profile Page
-View all
-Free plan
-
-FA
-akintoyessef@gmail.com
-FA
-
-
-Dynamically Updating Task List by Category
-
-1
-
-Share
-
 <?php include("../Back/bd.php"); include("../Back/donnee.php"); ?> <!DOCTYPE html> <html lang="fr"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device
 
 
@@ -56,15 +8,13 @@ Share
 
 
 <?php
-// Créer ce fichier à l'emplacement ../Back/charger_taches.php
 
 session_start();
 include("bd.php");
-include("fonctions.php"); // Si vous avez des fonctions utilitaires
 
 // Vérifier si l'utilisateur est connecté
-if (!isset($_SESSION["id_utilisateur"])) {
-    echo "Erreur: Utilisateur non connecté";
+if (!isset($_SESSION["id"])) {
+      header("Location: ../index.php");
     exit;
 }
 
@@ -126,15 +76,17 @@ try {
             </div>
             <div class="task-actions">
                 <button class="task-action-btn" onclick="editTask(<?php echo $tache['id']; ?>)"><i class="fas fa-edit"></i></button>
+                <button class="task-action-btn" onclick="shareTask(<?php echo $tache['id']; ?>)"><i class="fas fa-share-alt"></i></button>
                 <button class="task-action-btn" onclick="deleteTask(<?php echo $tache['id']; ?>)"><i class="fas fa-trash"></i></button>
             </div>
+
         </li>
         <?php endforeach; ?>
         <?php if(empty($taches)): ?>
         <li class="task-item" style="justify-content: center; padding: 20px;">
             <div style="text-align: center; color: #666;">
                 <i class="far fa-smile" style="font-size: 24px; margin-bottom: 10px;"></i>
-                <p>Aucune tâche pour cette catégorie. Tout est bien organisé!</p>
+                <p>Aucune tâche pour cette catégorie.</p>
             </div>
         </li>
         <?php endif; ?>
